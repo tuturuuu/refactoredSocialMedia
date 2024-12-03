@@ -7,12 +7,21 @@ const app = express();
 const server = createServer(app);
 const io = require("./socket")(server); // Import socket logic
 
+const path = require('path');
+
 const userRoutes = require("./routes/users");
 const postRoutes = require("./routes/posts");
 const roomRoutes = require("./routes/rooms");
 
 // Middleware
 app.use(express.json());
+
+//Serve static file
+app.use(express.static(path.join(__dirname, 'dist')));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
 
 // Routes
 app.use('/api/user', userRoutes);
@@ -30,3 +39,4 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.error("Error connecting to MongoDB:", error));
+
