@@ -148,10 +148,8 @@ export default {
       },
     },
     async mounted() {
-      this.socket = io('localhost:3000')
-  
-      console.log('Connected to server:', this.socket.connected)
-  
+      this.socket = io()
+    
       this.socket.on('connect', () => {
         console.log('Connected to server!')
         this.socket.emit('join room', this.$route.params.id)
